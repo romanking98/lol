@@ -1,0 +1,21 @@
+Phunky Python I (30 Points)
+
+We are given the following python code:
+
+x = 0 # REDACTED
+digs = [5919365124089439766, 5919365124089439762, 5919365124089439780, 5919365124089439786, 5919365124089439764, 5919365124089439781, 5919365124089439767]
+out = ""
+for letter in reversed(digs):
+    out = chr(letter - x) + out
+print out
+
+We need the program to print easyctf ==> out = "easyctf"
+
+Work from bottom to top.
+
+chr() prints the symbol for the corresponding ASCII code. So this obviously means that letter - x must fall in range(0,127).
+
+All we need to do is find digs[0] - 127. That will give us an idea of x.
+Then just keep putting values of x until you reach easyctf.
+
+x = 5919365124089439665

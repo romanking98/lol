@@ -1,0 +1,42 @@
+Risky Business (100 Points)
+
+We wanted to branch into the casino business, but human employees are too expensive so we decided to automate it.
+I feel like we missed something obvious though... Oh well! Here's the binary:
+https://www.easyctf.com/static/6a38498687cd9fa2c399b31bb4100d07272a755b_casino
+
+Solve this problem by logging into the shell server and navigating to /problems/casino
+
+The approach to solving such problems is first to fuzz this program with random input. We are greeted with the following:
+
+<Paste Screenshot>
+
+This program works on a probability basis. We can't bet more than $100,000.
+
+
+So, lets see how negative we can go. Negative numbers are represented in 2's complement. So +1 is represented as following:
+
+[user@localhost ~]$ gdb -q
+(gdb) p/t 1
+$1 = 1
+(gdb) p/t -1
+$2 = 11111111111111111111111111111111
+(gdb) p/x -1
+$3 = 0xffffffff
+(gdb) p/x -2
+$4 = 0xfffffffe
+(gdb) p/x -20
+$5 = 0xffffffec
+(gdb) 
+
+So if our money is represented in signed hex format, we would be having 0xffffffff representing -1$. If we can go as low as the
+minimum possible negative number, we would cross the signed bit and "wrap up" to the highest positive value.(Basic Integer Overflow)
+
+That's it. We need to simply keep betting $100,000 for around 40 to 50 times (Depending on how unlucky we are :)
+
+One easy way to do that was to
+
+for i in `seq 1 80`; do echo 100000 >>> /tmp/attack; done;
+
+./casino < /tmp/attack
+
+<Paste Screenshot>

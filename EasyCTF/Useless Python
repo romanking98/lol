@@ -1,0 +1,12 @@
+Useless Python (50 Points)
+
+We are given a base-16 encoded python file. Decrypt it using this website: http://pbaseconverter.com/
+
+We get:
+
+exec(chr(101)+chr(120)+chr(101)+chr(99)+chr(40)+chr(99)+chr(104)+chr(114)+chr(40)+chr(49)+chr(48)+chr(49)+chr(41)+chr(43)+
+chr(99)+chr(104)+chr(114)+chr(40)+chr(49)+chr(50)+chr(48)+chr(41)+chr(43)+chr(99)+chr(104)+chr(114)+chr(40)+chr(49)+chr(48)+chr(49)+chr(41)+chr(43)+chr(99)+chr(104)+chr(114)+chr(40)+chr(57)+chr(57)+chr(41)+chr(43)+chr(99)+chr(104)+chr(114)+chr(40)+chr(52)+chr(48)+chr(41)+chr(43)+chr(99)+chr(104)+chr(114)+chr(40)+chr(57)+chr(57)+chr(41)+chr(43)+chr(99)+chr(104)+chr(114)+chr(40)+chr(49)+chr(48)+chr(52)+chr(41)+chr(43)+chr(99)+chr(104)+chr(114)+chr(40)+chr(49)+chr(49)+chr(52)+chr(41)+chr(43)+chr(99)+chr(104)+chr(114)+chr(40)+chr(52)+chr(48)+chr(41)+chr(43)+chr(99)+chr(104)+chr(114)+chr(40)+chr(52)+chr(57)+chr(41)+chr(43)+chr(99)+chr(104)+ch4)+chr(40)+chr(52)+chr(49)+chr(41)+chr(41) .....)
+
+chr(int a) basically prints the corresponding ASCII letter for code 'a'. So just open up a python interpreter and copy paste this and replace exec() with print()
+
+Doing this 3 times gives us the flag : easyctf{python_3x3c_exec_3xec_ex3c

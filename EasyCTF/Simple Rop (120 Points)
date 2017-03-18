@@ -1,0 +1,8 @@
+Simple Rop (120 Points)
+
+ROP stands for Return Orineted Programming which focuses on overwriting 4 bytes below the saved stack pointer (ebp) in order to call another function part of the program or libc. Here we are given the print_flag() function. We only need the address to this function. (Can be found using objdump or gdb)
+
+After that,
+echo $(python -c 'print "A"*76 + "<return address in LITTLE ENDIAN>"') | ./simple-rop
+
+gives us the flag.

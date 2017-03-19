@@ -1,0 +1,45 @@
+Phunky Python II (115 Points)
+
+Another Python challenge.
+
+import operator
+jkx = 0 # REDACTED
+pork = ((12*jkx+44)/4)-(1234/617)*jkx-sum([1, 4, 7])
+jkx *= pork
+pp = filter(lambda g: not any(g % u == 0 for u in range(2, g)), range(2, 10000))
+b = reduce(operator.mul, (pp[i] ** int(str(jkx)[i]) for i in range(len(str(jkx)))))
+print b == 9755319946060346207194736282956232941212715378522101864371548625019455937209174134340437935379173666715814158989989110932143013802467674927235484528677435047130848183463045930348193786073600236460759949498252811662834325155823900123899334845096239827005663150998714677359666737207521845864523080000000
+That's a huge number in the end!!. So we need to find an initial value of jkx such that b == <That Huge value>
+So open up python interpreter if you don't understand the lambda function and copy paste the lines.
+
+>>> pp = filter(lambda g: not any(g % u == 0 for u in range(2, g)), range(2, 10000))
+>>> print pp
+
+pp is the set of all prime numbers from 2 to 100000. reduce() is basically going to raise each prime number to a particular exponent and then multiply everything together. As an example, if finally jkx = 234, this means (2^2) * (3^3) * (5^4).
+
+All we need to do is find the power of all prime numbers in b (which is the <huge_value>).
+
+I wrote a power function in the interpreter itself.
+
+>>> counter = 0
+>>> def power(m,n,counter=0):
+...     while True:
+...             if(m%n == 0):
+...                     counter += 1
+...                     m = m/n
+...             else:
+...                     return counter
+... 
+>>> power(8,2)
+3
+>>> for i in range(len(pp)):
+...     final.append(power(b,pp[i]))
+... 
+>>> final
+[8, 5, 6, 1, 1, 5, 5, 9, 3, 5, 9, 6, 6, 4, 8, 4, 2, 2, 6, 9, 4, 7, 7, 4, 3, 9, 3, 4, 0, 9, 6, 8, 6, 5, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.........]
+
+So we have the final value of jkx. Now all we need is intial jkx. Note that pork = jkx - 1.
+
+Thus we have initial jkx * (jkx-1) = 8561155935966484226947743934096865112
+Solve for jkx, which will be closest to square root of this number. In order to get exact square root, use the Decimal function from Decimal
+>>> from decimal import *

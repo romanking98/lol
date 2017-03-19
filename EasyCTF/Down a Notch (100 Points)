@@ -1,0 +1,104 @@
+Down a Notch (100 Points)
+
+We are given the 64-bit assembly dump:
+
+check(int, int):
+        pushq   %rbp
+        movq    %rsp, %rbp
+        movl    %edi, -36(%rbp)
+        movl    %esi, -40(%rbp)
+        movl    -36(%rbp), %eax
+        xorl    -40(%rbp), %eax
+        movl    %eax, -4(%rbp)
+        movl    -4(%rbp), %eax
+        addl    $98, %eax
+        movl    %eax, -8(%rbp)
+        movl    -8(%rbp), %eax
+        notl    %eax
+        movl    %eax, %edx
+        movl    -40(%rbp), %eax
+        addl    %edx, %eax
+        movl    %eax, -12(%rbp)
+        movl    -12(%rbp), %eax
+        xorl    -36(%rbp), %eax
+        movl    %eax, -16(%rbp)
+        movl    -40(%rbp), %eax
+        imull   -4(%rbp), %eax
+        cltd
+        idivl   -8(%rbp)
+        movl    %eax, %edx
+        movl    -36(%rbp), %eax
+        leal    (%rdx,%rax), %ecx
+        movl    -12(%rbp), %edx
+        movl    -16(%rbp), %eax
+        addl    %edx, %eax
+        xorl    %ecx, %eax
+        movl    %eax, -20(%rbp)
+        cmpl    $-814, -20(%rbp)
+        sete    %al
+        popq    %rbp
+        ret
+
+Assembly in AT&T syntax is difficult for me to read hence I simply translated it to Intel sytax:
+
+mov [rbp-36], edi
+mov [rbp-40], esi
+mov eax, [rbp-36]
+xor eax, [rbp-40]
+mov [rbp-4], eax
+add eax, 98
+mov [rbp-8], eax
+mov eax, [rbp-8]
+not eax
+mov edx, eax
+mov eax, [rbp-40]
+add eax, edx
+mov [rbp-12], eax
+mov eax, [rbp-12]
+xor rax, [rbp-36]
+mov [rbp-16], eax
+mov eax, [rbp-40]
+imul eax, [rbp-4]
+cdq
+idiv dword ptr [rbp-8]
+mov edx, eax
+mov eax, [rbp-36]
+lea ecx, [rdx + rax*1]
+mov edx, [rbp-12]
+mov eax, [rbp-16]
+add eax, edx
+xor eax, ecx
+mov [rbp-20], eax
+cmp [rbp-20], -814
+
+That's better.
+
+The code basically takes 2 numbers and then makes new variables out of them which are stored at different offsets from RBP and then finally it performs some mathematical operations like xoring and division and compares with -814. We can break down this code and analyse each variable separately. In the end, it will give us 1 equation with 2 variables : edi and esi.
+
+The important operations to note are "imul","cdq" and "idiv". The Intel manual helps in analysing and understanding how these instructions work (or Google).
+
+cdq -->  extend sign bit of eax into all bits of edx
+idiv --> eax contains edx:eax/[rbp-8] ; edx contains remainder
+To solve the equation, I wrote the following python script:
+
+#!/usr/bin/python
+
+a = int(raw_input("Enter esi: "))
+b = int(raw_input("Enter edi: "))
+
+r4 = a^b
+r8 = r4 + 98
+r12 = (~(r8)) + a
+r16 = r12^b
+ex = a*(a^b)
+quotient = ex/r8
+pp = (r16 + r12)^(quotient + b)
+print pp
+
+EXECUTION:
+
+sanat@exopetus:~/easyctf$ python solve.py 
+Enter esi: 1097
+Enter edi: 1
+-814
+sanat@exopetus:~/easyctf$ 
